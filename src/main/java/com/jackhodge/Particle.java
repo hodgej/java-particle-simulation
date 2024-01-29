@@ -73,7 +73,6 @@ public class Particle {
         this.myColor = myColor;
     }
 
-
     public static double clamp(double min, double current, double max){
         return Math.max(min, Math.min(max, current));
     }

@@ -10,9 +10,10 @@ public class SimSlider extends JSlider{
 
     SimulationManager parent;
 
-    public SimSlider(SimulationManager parent, UIUpdateReceiver updateReceiver, String label_text, int min, int max) {
+
+    public SimSlider(SimulationManager parent, UIUpdateReceiver updateReceiver, int min, int max) {
         super(JSlider.HORIZONTAL, min, max, (int) max/2);
-        this.label = new JLabel(label_text);
+
         this.setValue(SimulationManager.GLOBAL_START_PARTICLES);
 
         this.addChangeListener(new ChangeListener() {
@@ -21,8 +22,5 @@ public class SimSlider extends JSlider{
                 updateReceiver.sliderEvent(getValue());
             }
         });
-
-
     }
-
 }

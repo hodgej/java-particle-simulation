@@ -4,6 +4,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
+/*
+ParticleSimulation
+
+Updates each particle every run() call by SimulationManager.
+
+ */
+
 public class ParticleSimulation extends JPanel {
 
     ArrayList<Particle> particles;
@@ -15,7 +22,7 @@ public class ParticleSimulation extends JPanel {
         this.particles = particles;
     }
 
-
+    // Update Each Particle
     public void updateSimulation(){
         ArrayList<Particle> particlesCopy = new ArrayList<>(particles);
 
@@ -45,11 +52,11 @@ public class ParticleSimulation extends JPanel {
             // wall repulsion
             double distToRightWall = SimulationManager.GLOBAL_SIM_SIZE-p.getX();
             // where x=0=-250; x=250=0; x=500=250;
-            double equalizedWallDistance = distToRightWall - (double) SimulationManager.GLOBAL_SIM_SIZE /2;
-
+            double equalizedWallDistance = distToRightWall - (double) SimulationManager.GLOBAL_SIM_SIZE / 2;
+            // ceiling repulsion
             double distToBottomCeiling = SimulationManager.GLOBAL_SIM_SIZE-p.getY();
             // where x=0=-250; x=250=0; x=500=250;
-            double equalizedCeilingDistance = distToBottomCeiling - (double) SimulationManager.GLOBAL_SIM_SIZE /2;
+            double equalizedCeilingDistance = distToBottomCeiling - (double) SimulationManager.GLOBAL_SIM_SIZE / 2;
 
             double wallForceX = wallRepulsionFunction((int) equalizedWallDistance);
             double wallForceY = wallRepulsionFunction((int) equalizedCeilingDistance);
@@ -58,9 +65,8 @@ public class ParticleSimulation extends JPanel {
 
 
             // update position
-            p.updatePhysics(.0001);
+            p.updatePhysics(SimulationManager.DELTA_TIME);
         }
-
         repaint();
     }
 
@@ -82,9 +88,11 @@ public class ParticleSimulation extends JPanel {
     }
 
     public void setParticles(int num){
+        // Remove particles until = num
         while(particles.size() > num){
             particles.remove(0);
         }
+        // Add particles until = num
         while(particles.size() < num) {
             particles.add(SimulationManager.generateNewParticle());
         }
@@ -92,6 +100,7 @@ public class ParticleSimulation extends JPanel {
     }
 
     public double[] calculateForceComponents(double repulsive_force, Particle p, Particle otherParticle){
+        // Calculate the repulsive force between two particles
         double diffX = p.getX() - otherParticle.getX();
         double diffY = p.getY() - otherParticle.getY();
 
